@@ -1,0 +1,5 @@
+{
+  "name": "TaxPJ - Gestão de Aplicações e Tributação",
+  "description": "Sistema avançado para importação de extratos (OFX, PDF, Layout BB) com cálculo automatizado de IRPJ e CSLL para Lucro Real e Presumido, seguindo a legislação brasileira vigente.",
+  "requestFramePermissions": []
+}
