@@ -1,0 +1,10 @@
+{
+  "name": "taxpj-functions",
+  "private": true,
+  "type": "commonjs",
+  "engines": { "node": "20" },
+  "dependencies": {
+    "@google/genai": "^0.0.0",
+    "cors": "^2.8.5"
+  }
+}
