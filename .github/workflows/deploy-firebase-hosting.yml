@@ -11,20 +11,13 @@ permissions:
   id-token: write
 
 jobs:
-  build_e_deploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Baixar código do repositório
         uses: actions/checkout@v4
 
-      - name: Autenticar no Google Cloud (sem chave)
-        id: auth
-        uses: google-github-actions/auth@v2
-        with:
-          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-          create_credentials_file: true
-
+      # Build do seu Vite (gera /dist)
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
@@ -36,10 +29,12 @@ jobs:
       - name: Gerar build
         run: npm run build
 
-      - name: Publicar no Firebase Hosting
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ steps.auth.outputs.credentials_file_path }}
-        run: npx firebase-tools deploy --only hosting --project ${{ secrets.GCP_PROJECT_ID }} --non-interactive
-
-      - name: Publicar no Firebase Hosting
-        run: npx firebase-tools deploy --only hosting --project ${{ secrets.GCP_PROJECT_ID }}
+      # Deploy no Firebase com WIF (sem chave)
+      - name: Deploy no Firebase Hosting
+        uses: sws2apps/firebase-deployment@v3.7.0
+        with:
+          workloadIdentityProvider: ${{ secrets.GCP_WIF_PROVIDER }}
+          serviceAccount: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          project: revisorafiscalsistemas
+          hosting: true
+          function: false
